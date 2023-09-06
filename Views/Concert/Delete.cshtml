@@ -1,0 +1,28 @@
+﻿@model Concert
+
+<form method="post">
+    <div class="border p-3 mt-5">
+        <div class="row pb-3">
+            <h2 class="text-primary">Konser Sil</h2>
+            <hr />
+        </div>
+        <div>
+            <label asp-for="SingerName"></label>
+            <input class="form-control" disabled asp-for="SingerName" />
+        </div>
+        <div>
+            <label asp-for="Area"></label>
+            <input class="form-control" disabled asp-for="Area" />
+        </div>
+        <div>
+            <label asp-for="City"></label>
+            <input class="form-control" disabled asp-for="City" />
+        </div>
+        <div>
+            <label asp-for="Date"></label>
+            <input class="form-control" disabled asp-for="Date" />
+        </div>
+        <button class="btn btn-danger btn-lg mt-2" type="submit" style="border-radius: 10px">Sil</button>
+        <a class="btn btn-primary btn-lg mt-2" asp-controller="Concert" asp-action="Index" style="border-radius: 10px">Geri Dön</a>
+    </div>
+</form>

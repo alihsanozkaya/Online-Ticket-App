@@ -1,0 +1,57 @@
+﻿@model Theater
+
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="PhotoUrl" hidden />
+    <div class="row">
+        <div class="col-10">
+            <div class="border p-3 mt-5">
+                <div class="row pb-3">
+                    <h2 class="text-primary">Tiyatro Ekle</h2>
+                    <hr />
+                </div>
+                <div class="mb-1">
+                    <label asp-for="TheaterName"></label>
+                    <input class="form-control" asp-for="TheaterName" />
+                    <span class="text-danger" asp-validation-for="TheaterName"></span>
+                </div>
+                <div class="mb-1">
+                    <label asp-for="Description"></label>
+                    <input class="form-control" asp-for="Description" />
+                    <span class="text-danger" asp-validation-for="Description"></span>
+                </div>
+                <div class="mb-1">
+                    <label asp-for="Supporter"></label>
+                    <input class="form-control" asp-for="Supporter" />
+                    <span class="text-danger" asp-validation-for="Supporter"></span>
+                </div>
+                <div class="mb-1">
+                    <label asp-for="Price"></label>
+                    <input class="form-control" asp-for="Price" />
+                    <span class="text-danger" asp-validation-for="Price"></span>
+                </div>
+                <div class="mb-1">
+                    <label asp-for="Area"></label>
+                    <input class="form-control" asp-for="Area" />
+                    <span class="text-danger" asp-validation-for="Area"></span>
+                </div>
+                <div class="mb-1">
+                    <label asp-for="City"></label>
+                    <input class="form-control" asp-for="City" />
+                    <span class="text-danger" asp-validation-for="City"></span>
+                </div>
+                <div class="mb-1">
+                    <label asp-for="Date"></label>
+                    <input class="form-control" asp-for="Date" type="datetime" />
+                    <span class="text-danger" asp-validation-for="Date"></span>
+                </div>
+                <div class="mb-1">
+                    <label asp-for="PhotoUrl"></label>
+                    <input type="file" name="file" class="form-control" />
+                </div>
+                <button class="btn btn-success btn-lg mt-2" type="submit" style="border-radius: 10px">Ekle</button>
+
+                <a class="btn btn-primary btn-lg mt-2" asp-controller="Theater" asp-action="Index" style="border-radius: 10px">Geri Dön</a>
+            </div>
+        </div>
+    </div>
+</form>

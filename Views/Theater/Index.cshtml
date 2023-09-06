@@ -1,0 +1,79 @@
+﻿@model List<Theater>
+
+@if (TempData["basarili"] != null)
+{
+    <div class="container" style="width:30%;">
+        <h4 class="text-danger text-center">@TempData["basarili"]</h4>
+    </div>
+}
+
+@{
+    string dayConverter(string day)
+    {
+        switch (day)
+        {
+            case "Monday":
+                day = "Pazartesi";
+                break;
+            case "Tuesday":
+                day = "Salı";
+                break;
+            case "Wednesday":
+                day = "Çarşamba";
+                break;
+            case "Thursday":
+                day = "Perşembe";
+                break;
+            case "Friday":
+                day = "Cuma";
+                break;
+            case "Saturday":
+                day = "Cumartesi";
+                break;
+            case "Sunday":
+                day = "Pazar";
+                break;
+            default:
+                break;
+        }
+        return day;
+    }
+}
+
+<div class="container" style="width:30%;">
+    @foreach (var item in Model)
+    {
+        <div class="card mb-3">
+            <h3 class="card-header">@item.TheaterName Tiyatrosu</h3>
+            <div class="card-body">
+                <h5 class="card-title">@item.Area</h5>
+                <h6 class="card-subtitle text-muted">@item.City</h6>
+            </div>
+            <img src="@item.PhotoUrl" alt="Image cap" width="100%" height="100%" style="font-size:1.125rem;text-align:center;">
+            <div class="card-body">
+                <p class="card-text">@item.Description</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <b>
+                        Tarih: @item.Date.Value.Day/@item.Date.Value.Month/@item.Date.Value.Year @dayConverter(@item.Date.Value.DayOfWeek.ToString())
+                    </b>
+                </li>
+                <li class="list-group-item">
+                    <b>
+                        Saat: @item.Date.Value.Hour:@(@item.Date.Value.Minute == 0 ? "00" : @item.Date.Value.Minute)
+                    </b>
+                </li>
+                <li class="list-group-item">@item.Supporter</li>
+                <li class="list-group-item"><b>@item.Price TL</b></li>
+            </ul>
+            <div class="card-body">
+                <a class="btn btn-warning" asp-controller="Theater" asp-action="Update" asp-route-id="@item.Id">Güncelle</a>
+                <a class="btn btn-danger" asp-controller="Theater" asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+            </div>
+        </div>
+    }
+
+    <a class="btn btn-success mt-3" asp-controller="Theater" asp-action="Add" style="display:block">Ekle</a>
+    <a class="btn btn-info mt-1" asp-controller="Ticket" asp-action="Index" style="display:block">Geri Dön</a>
+</div>
