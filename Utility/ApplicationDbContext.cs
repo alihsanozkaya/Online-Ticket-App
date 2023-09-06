@@ -11,6 +11,7 @@ namespace Online_Ticket_App.Utility
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
         }
+        public DbSet<ApplicationUser> applicationUsers { get; set; }
         public DbSet<Concert> concerts { get; set; }
         public DbSet<Theater> theaters { get; set; }
         public DbSet<Sport> sports { get; set; }

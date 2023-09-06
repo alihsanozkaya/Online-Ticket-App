@@ -3,6 +3,8 @@ using Online_Ticket_App.Models.IRepository;
 using Online_Ticket_App.Models.Repository;
 using Online_Ticket_App.Utility;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Online_Ticket_App.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +13,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.
     GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IConcertRepository, ConcertRepository>();
 builder.Services.AddScoped<ISportRepository, SportRepository>();
 builder.Services.AddScoped<ITheaterRepository, TheaterRepository>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
@@ -33,6 +38,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
