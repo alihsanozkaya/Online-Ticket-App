@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Online_Ticket_App.Models;
 using Online_Ticket_App.Models.IRepository;
+using Online_Ticket_App.Utility;
 using System.Composition;
+using System.Data;
 
 namespace Online_Ticket_App.Controllers
 {
@@ -19,11 +22,13 @@ namespace Online_Ticket_App.Controllers
             List<Sport> sportList = _sportRepository.GetAll().ToList();
             return View(sportList);
         }
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Add()
         {
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Add(Sport sport, IFormFile? file)
         {
             if (ModelState.IsValid)
@@ -46,6 +51,33 @@ namespace Online_Ticket_App.Controllers
             }
             return View();
         }
+        public IActionResult Buy(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                Sport? sport = _sportRepository.Get(u => u.Id == id);
+                if (sport == null)
+                {
+                    return NotFound();
+                }
+                return View(sport);
+            }
+            else
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+
+        }
+        [HttpPost]
+        public IActionResult Buy(Sport sport)
+        {
+            return View(sport);
+        }
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -60,6 +92,7 @@ namespace Online_Ticket_App.Controllers
             return View(sport);
         }
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult DeletePost(int? id)
         {
             if (id == null || id == 0)
@@ -77,6 +110,7 @@ namespace Online_Ticket_App.Controllers
             TempData["basarili"] = "Maç silme işlemi başarılı.";
             return RedirectToAction("Index", "Sport");
         }
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Update(int? id)
         {
             if (id == null || id == 0)
@@ -92,6 +126,7 @@ namespace Online_Ticket_App.Controllers
             return View(sportDB);
         }
         [HttpPost]
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Update(Sport sport, IFormFile? file)
         {
             if (ModelState.IsValid)

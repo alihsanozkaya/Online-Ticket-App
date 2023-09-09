@@ -1,0 +1,33 @@
+﻿@model Sport
+
+<div class="container">
+    <h4 class="text-center">Satın Alma Ekranı</h4>
+    <form method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-10">
+                <div class="border p-3 mt-5">
+                    <div class="mb-1">
+                    </div>
+                    <div class="mb-1">
+                        <label>Kişi sayısı</label>
+                        <select class="form-select" type="number">
+                            @for(int i = 1; i <10; i++)
+                            {
+                                <option>@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-1">
+                        <label>Kişi sayısı</label>
+                        <select class="form-select" type="number">
+                            @for (int i = 1; i < 6; i++)
+                            {
+                                <option>@i. Kategori</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

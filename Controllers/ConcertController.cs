@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Online_Ticket_App.Models;
 using Online_Ticket_App.Models.IRepository;
+using Online_Ticket_App.Models.Repository;
+using Online_Ticket_App.Utility;
 using System;
+using System.Data;
 
 namespace Online_Ticket_App.Controllers
 {
@@ -19,11 +23,13 @@ namespace Online_Ticket_App.Controllers
             List<Concert> concertList = _concertRepository.GetAll().ToList();
             return View(concertList);
         }
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Add()
         {
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Add(Concert concert, IFormFile? file)
         {
             if (ModelState.IsValid)
@@ -46,6 +52,28 @@ namespace Online_Ticket_App.Controllers
             }
             return View();
         }
+        public IActionResult Buy(int? id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                Concert? concert = _concertRepository.Get(u => u.Id == id);
+                if (concert == null)
+                {
+                    return NotFound();
+                }
+                return View(concert);
+            }
+            else
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+        }
+        [HttpPost]
+        public IActionResult Buy(Concert concert)
+        {
+            return View(concert);
+        }
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -61,6 +89,7 @@ namespace Online_Ticket_App.Controllers
             return View(concert);
         }
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult DeletePost(int? id)
         {
             if (id == null || id == 0)
@@ -78,6 +107,7 @@ namespace Online_Ticket_App.Controllers
             TempData["basarili"] = "Konser silme işlemi başarılı.";
             return RedirectToAction("Index", "Concert");
         }
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Update(int? id)
         {
             if (id == null || id == 0)
@@ -94,6 +124,7 @@ namespace Online_Ticket_App.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Update(Concert concert, IFormFile? file)
         {
             if (ModelState.IsValid)

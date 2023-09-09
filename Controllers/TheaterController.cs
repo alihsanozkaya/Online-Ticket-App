@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Online_Ticket_App.Models;
 using Online_Ticket_App.Models.IRepository;
+using Online_Ticket_App.Models.Repository;
+using Online_Ticket_App.Utility;
+using System.Data;
 
 namespace Online_Ticket_App.Controllers
 {
@@ -18,11 +22,13 @@ namespace Online_Ticket_App.Controllers
             List<Theater> theaterList = _theaterRepository.GetAll().ToList();
             return View(theaterList);
         }
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Add()
         {
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Add(Theater theater, IFormFile? file)
         {
             if (ModelState.IsValid)
@@ -45,6 +51,28 @@ namespace Online_Ticket_App.Controllers
             }
             return View();
         }
+        public IActionResult Buy(int? id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                Theater? theater = _theaterRepository.Get(u => u.Id == id);
+                if (theater == null)
+                {
+                    return NotFound();
+                }
+                return View(theater);
+            }
+            else
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+        }
+        [HttpPost]
+        public IActionResult Buy(Theater theater)
+        {
+            return View(theater);
+        }
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -60,6 +88,7 @@ namespace Online_Ticket_App.Controllers
             return View(theater);
         }
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult DeletePost(int? id)
         {
             if (id == null || id == 0)
@@ -77,6 +106,7 @@ namespace Online_Ticket_App.Controllers
             TempData["basarili"] = "Tiyatro silme işlemi başarılı.";
             return RedirectToAction("Index", "Theater");
         }
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Update(int? id)
         {
             if (id == null || id == 0)
@@ -92,6 +122,7 @@ namespace Online_Ticket_App.Controllers
             return View(theaterDB);
         }
         [HttpPost]
+        [Authorize(Roles = UserRoles.Role_Admin)]
         public IActionResult Update(Theater theater, IFormFile? file)
         {
             if (ModelState.IsValid)

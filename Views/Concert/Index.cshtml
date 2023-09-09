@@ -74,7 +74,13 @@
                     <a class="btn btn-warning" asp-controller="Concert" asp-action="Update" asp-route-id="@item.Id">Güncelle</a>
                     <a class="btn btn-danger" asp-controller="Concert" asp-action="Delete" asp-route-id="@item.Id">Sil</a>
                 </div>
-            }            
+            }
+            @if (!User.IsInRole(UserRoles.Role_Admin))
+            {
+                <div class="card-body" align="center" valign="middle">
+                    <a class="btn btn-success btn-lg" asp-controller="Concert" asp-action="Buy" asp-route-id="@item.Id">Satın Al</a>
+                </div>
+            }
         </div>
     }
     @if (User.IsInRole(UserRoles.Role_Admin))
