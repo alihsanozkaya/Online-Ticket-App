@@ -15,5 +15,8 @@ namespace Online_Ticket_App.Utility
         public DbSet<Concert> concerts { get; set; }
         public DbSet<Theater> theaters { get; set; }
         public DbSet<Sport> sports { get; set; }
+        public DbSet<Ticket> tickets { get; set; }
+        public DbSet<Category> categories { get; set; }
+
     }
 }
