@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Online_Ticket_App.Models;
 using Online_Ticket_App.Models.IRepository;
+using Online_Ticket_App.Models.Repository;
 using Online_Ticket_App.Utility;
 using System.Composition;
 using System.Data;
@@ -11,10 +13,12 @@ namespace Online_Ticket_App.Controllers
     public class SportController : Controller
     {
         private readonly ISportRepository _sportRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public SportController(ISportRepository sportRepository, IWebHostEnvironment webHostEnvironment)
+        public SportController(ISportRepository sportRepository, ICategoryRepository categoryRepository, IWebHostEnvironment webHostEnvironment)
         {
             _sportRepository = sportRepository;
+            _categoryRepository = categoryRepository;
             _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
@@ -59,6 +63,13 @@ namespace Online_Ticket_App.Controllers
             }
             if (User.Identity.IsAuthenticated)
             {
+                IEnumerable<SelectListItem> categories = _categoryRepository.GetAll()
+                .Select(k => new SelectListItem
+                {
+                    Text = k.Name,
+                    Value = k.Id.ToString()
+                });
+                ViewBag.categories = categories;
                 Sport? sport = _sportRepository.Get(u => u.Id == id);
                 if (sport == null)
                 {

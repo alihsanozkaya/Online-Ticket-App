@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Online_Ticket_App.Models;
 using Online_Ticket_App.Models.IRepository;
 using Online_Ticket_App.Models.Repository;
@@ -12,10 +13,12 @@ namespace Online_Ticket_App.Controllers
     public class ConcertController : Controller
     {
         private readonly IConcertRepository _concertRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public ConcertController(IConcertRepository concertRepository, IWebHostEnvironment webHostEnvironment)
+        public ConcertController(IConcertRepository concertRepository, ICategoryRepository categoryRepository,IWebHostEnvironment webHostEnvironment)
         {
             _concertRepository = concertRepository;
+            _categoryRepository = categoryRepository;
             _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
@@ -56,6 +59,13 @@ namespace Online_Ticket_App.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                IEnumerable<SelectListItem> categories = _categoryRepository.GetAll()
+                .Select(k => new SelectListItem
+                {
+                    Text = k.Name,
+                    Value = k.Id.ToString()
+                });
+                ViewBag.categories = categories;
                 Concert? concert = _concertRepository.Get(u => u.Id == id);
                 if (concert == null)
                 {
