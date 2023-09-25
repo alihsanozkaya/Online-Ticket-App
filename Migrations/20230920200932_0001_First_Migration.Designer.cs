@@ -12,8 +12,8 @@ using Online_Ticket_App.Utility;
 namespace Online_Ticket_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230920111910_databaseguncellendi")]
-    partial class databaseguncellendi
+    [Migration("20230920200932_0001_First_Migration")]
+    partial class _0001_First_Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

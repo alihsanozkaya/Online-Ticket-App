@@ -1,0 +1,21 @@
+﻿@model Category
+
+<form method="post">
+    <div class="row">
+        <div class="col-10">
+            <div class="border p-3 mt-5">
+                <div class="row pb-3">
+                    <h2 class="text-primary">Kategori Ekle</h2>
+                    <hr />
+                </div>
+                <div class="mb-1">
+                    <label asp-for="Name"></label>
+                    <input class="form-control" asp-for="Name" />
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                </div>
+                <button class="btn btn-success btn-lg mt-2" type="submit" style="border-radius: 10px">Ekle</button>
+                <a class="btn btn-primary btn-lg mt-2" asp-controller="Category" asp-action="Index" style="border-radius: 10px">Geri Dön</a>
+            </div>
+        </div>
+    </div>
+</form>

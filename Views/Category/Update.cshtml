@@ -1,0 +1,17 @@
+﻿@model Category
+
+<form method="post">
+    <div class="border p-3 mt-5">
+        <div class="row pb-3">
+            <h2 class="text-primary">Kategori Güncelle</h2>
+            <hr />
+        </div>
+        <div>
+            <label asp-for="Name"></label>
+            <input class="form-control" asp-for="Name" />
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+        <button class="btn btn-warning btn-lg mt-2" type="submit" style="border-radius: 10px">Güncelle</button>
+        <a class="btn btn-primary btn-lg mt-2" asp-controller="Category" asp-action="Index" style="border-radius: 10px">Geri Dön</a>
+    </div>
+</form>

@@ -10,5 +10,9 @@ namespace Online_Ticket_App.Models.Repository
         {
             _applicationDbContext = applicationDbContext;
         }
+        public void Save()
+        {
+            _applicationDbContext.SaveChanges();
+        }
     }
 }
